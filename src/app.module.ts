@@ -1,23 +1,36 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 
-// Controller
 import { ProductsController } from './adapters/in/controllers/products.controller';
+import { OrdersController } from './adapters/in/controllers/orders.controller';
 
-// Use Case
 import { GetAllProductsUseCase } from './app/use-cases/get-all-products.use-case';
+import { CreateOrderUseCase } from './app/use-cases/create-order.use-case';
 
-// Providers externos (adapters/out)
 import { BrazilianProvider } from './adapters/out/http/brazilian.provider';
 import { EuropeanProvider } from './adapters/out/http/european.provider';
+import { PrismaOrderRepository } from './adapters/out/database/repositories/prisma-order.repository';
+import { PrismaService } from './adapters/out/database/prisma/prisma.service';
 
 @Module({
   imports: [HttpModule],
-  controllers: [ProductsController],
+  controllers: [ProductsController, OrdersController],
   providers: [
-    { provide: 'BrazilianProvider', useClass: BrazilianProvider },
-    { provide: 'EuropeanProvider', useClass: EuropeanProvider },
+    PrismaService,
+    {
+      provide: 'BrazilianProvider',
+      useClass: BrazilianProvider,
+    },
+    {
+      provide: 'EuropeanProvider',
+      useClass: EuropeanProvider,
+    },
+    {
+      provide: 'OrderRepository',
+      useClass: PrismaOrderRepository,
+    },
     GetAllProductsUseCase,
+    CreateOrderUseCase,
   ],
 })
 export class AppModule {}
