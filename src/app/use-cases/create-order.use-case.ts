@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { OrderRepository } from '../interfaces/out/order.repository';
 import { Order } from 'src/domain/entities/order.entity';
 import { randomUUID } from 'crypto';
+import { CreateOrderDto } from 'src/adapters/in/dto/create-order.dto';
 
 @Injectable()
 export class CreateOrderUseCase {
@@ -10,17 +11,7 @@ export class CreateOrderUseCase {
     private readonly orderRepository: OrderRepository
   ) {}
 
-  async execute(input: {
-    name: string;
-    email: string;
-    products: {
-      id: string;
-      name: string;
-      price: number;
-      image: string;
-      quantity: number;
-    }[];
-  }): Promise<Order> {
+  async execute(input: CreateOrderDto): Promise<Order> {
     const newOrder = new Order(
       randomUUID(),
       input.name,
