@@ -11,6 +11,7 @@ import { BrazilianProvider } from './adapters/out/http/brazilian.provider';
 import { EuropeanProvider } from './adapters/out/http/european.provider';
 import { PrismaOrderRepository } from './adapters/out/database/repositories/prisma-order.repository';
 import { PrismaService } from './adapters/out/database/prisma/prisma.service';
+import { FindAllOrdersUseCase } from './app/use-cases/find-all-orders.use-case';
 
 @Module({
   imports: [HttpModule],
@@ -31,6 +32,7 @@ import { PrismaService } from './adapters/out/database/prisma/prisma.service';
     },
     GetAllProductsUseCase,
     CreateOrderUseCase,
+    FindAllOrdersUseCase,
   ],
 })
 export class AppModule {}
