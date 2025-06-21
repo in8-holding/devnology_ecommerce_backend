@@ -1,16 +1,19 @@
 services:
-  db:
-    image: postgres
-    container_name: devnology_postgres
-    restart: always
+  postgres:
+    image: postgres:latest
+    container_name: ecommerce_postgres
     environment:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: ecommerce
     ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+      - '5432:5432'
+  app:
+    build: .
+    container_name: ecommerce_backend
+    ports:
+      - '3001:3001'
+    environment:
+      - DATABASE_URL=postgresql://dev:dev@postgres:5432/ecommerce
+    depends_on:
+      - postgres
